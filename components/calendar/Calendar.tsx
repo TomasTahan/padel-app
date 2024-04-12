@@ -6,6 +6,8 @@ import NuevaReserva from "./NuevaReserva";
 import Grilla from "./Grilla";
 import { createClient } from "@/lib/supabase/client";
 import { useEffect } from "react";
+import { format, parseISO } from "date-fns";
+import { es } from "date-fns/locale";
 
 export default function Calendar({ reservas }: any) {
   const searchParams = useSearchParams();
@@ -31,6 +33,10 @@ export default function Calendar({ reservas }: any) {
     };
   }, [supabase, router]);
 
+  const fechaFormateada = fecha
+    ? format(parseISO(fecha), "PPPP", { locale: es })
+    : "";
+
   return (
     <>
       <div className="sticky top-0 z-10 bg-white border-b">
@@ -38,12 +44,14 @@ export default function Calendar({ reservas }: any) {
           <div className="flex justify-between items-center p-4">
             <div className="ml-10">
               <p className="font-sans text-slate-500 capitalize font-semibold">
-                Fecha amigable
                 {fecha}
               </p>
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex gap-2 justify-center items-center">
+              <p className="font-sans text-slate-500 capitalize font-semibold mr-4">
+                {fechaFormateada}
+              </p>
               <NuevaReserva fecha={fecha} />
               <SelectDay />
             </div>
