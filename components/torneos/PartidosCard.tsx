@@ -48,18 +48,18 @@ export default function PartidosCard({ partido }: any) {
                 />
               </div>
             ) : (
-              <div className="flex gap-3 items-center mt-6 max-w-36">
+              <div className="flex gap-3 items-center mt-6 max-w-16">
                 <Input
                   className="text-center"
                   value={partido.set1 || ""}
                   readOnly
                 />
-                <p className="self-center">-</p>
+                {/* <p className="self-center">-</p>
                 <Input
                   className="text-center"
                   value={partido.set2 || ""}
                   readOnly
-                />
+                /> */}
               </div>
             )}
 
@@ -85,17 +85,17 @@ export default function PartidosCard({ partido }: any) {
             </div>
 
             <form action={subirResultado}>
-              <div className="flex gap-3  mt-6 max-w-64">
-                <input
-                  className="hidden"
-                  value={partido.partido_id}
-                  name="partidoId"
-                />
-                <Input className="text-center" name="set1" />
-                <p className="self-center">-</p>
+              <input
+                className="hidden"
+                value={partido.partido_id}
+                name="partidoId"
+              />
+              <div className="flex justify-center items-center  mt-6 max-w-64">
+                <Input className="text-center w-16 self-center" name="set1" />
+                {/* <p className="self-center">-</p>
                 <Input className="text-center" name="set2" />
                 <p className="self-center">-</p>
-                <Input className="text-center" name="set3" />
+                <Input className="text-center" name="set3" /> */}
               </div>
               <DialogClose asChild>
                 <Button type="submit" className="mt-8 self-end w-full">

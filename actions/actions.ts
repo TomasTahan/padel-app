@@ -19,7 +19,7 @@ export  async function crearAmericano() {
 export  async function subirResultado(formData: FormData) {
   const partidoId = formData.get("partidoId")
   const set1 = formData.get("set1")
-  const set2 = formData.get("set2")
+  const set2 = formData.get("set2") || null;
   const set3 = formData.get("set3") || null;
   
   const supabase = createClient();
