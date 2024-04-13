@@ -9,7 +9,14 @@ export default async function TorneoId({ params }: any) {
   const { data, error } = await supabase
     .from("vista_partidos_por_categoria")
     .select("*")
-    .eq("americanoId", id);
+    .eq("americanoId", id)
+    .or("tipo.is.null,tipo.neq.Playoffs");
+
+  // const { data, error } = await supabase
+  // .from("vista_partidos_por_categoria")
+  // .select("*")
+  // .eq("americanoId", id)  // Filtra por el ID del evento americano
+  // .eq("tipo", "Playoffs");
 
   //   const data = [
   //     {
@@ -350,7 +357,7 @@ export default async function TorneoId({ params }: any) {
   //     },
   //   ];
 
-  const categorias = ["4", "5", "D"];
+  const categorias = ["4"];
   const partidosPorCategoria = categorias.map((categoria) => ({
     categoria,
     grupos: [1, 2, 3, 4].map((grupo) => ({
