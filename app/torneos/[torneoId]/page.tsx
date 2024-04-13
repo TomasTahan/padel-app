@@ -1,5 +1,4 @@
 import PartidosCard from "@/components/torneos/PartidosCard";
-import { Input } from "@/components/ui/input";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function TorneoId({ params }: any) {
@@ -356,6 +355,7 @@ export default async function TorneoId({ params }: any) {
     categoria,
     grupos: [1, 2, 3, 4].map((grupo) => ({
       grupo,
+      // @ts-ignore
       partidos: data.filter(
         (partido) =>
           partido.categoria === categoria && partido.grupo_pareja1 === grupo
