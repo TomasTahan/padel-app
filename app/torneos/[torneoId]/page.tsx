@@ -6,17 +6,17 @@ export default async function TorneoId({ params }: any) {
 
   const supabase = createClient();
 
+  //   const { data, error } = await supabase
+  //     .from("vista_partidos_por_categoria")
+  //     .select("*")
+  //     .eq("americanoId", id)
+  //     .or("tipo.is.null,tipo.neq.Playoffs");
+
   const { data, error } = await supabase
     .from("vista_partidos_por_categoria")
     .select("*")
-    .eq("americanoId", id)
-    .or("tipo.is.null,tipo.neq.Playoffs");
-
-  // const { data, error } = await supabase
-  //   .from("vista_partidos_por_categoria")
-  //   .select("*")
-  //   .eq("americanoId", id) // Filtra por el ID del evento americano
-  //   .eq("tipo", "Playoffs");
+    .eq("americanoId", id) // Filtra por el ID del evento americano
+    .eq("tipo", "Playoffs");
 
   //   const data = [
   //     {
