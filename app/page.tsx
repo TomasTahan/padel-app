@@ -74,7 +74,8 @@ export default async function Home() {
 
   const reservas = await res.json();
 
-  // console.log(reservas);
+  console.log(reservas);
+  console.log("111111");
 
   return (
     <>
