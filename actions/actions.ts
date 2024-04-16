@@ -1,7 +1,7 @@
 "use server"
 
 import { createClient } from "@/lib/supabase/server";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation"
 
 export  async function crearAmericano() {
@@ -34,4 +34,10 @@ export  async function subirResultado(formData: FormData) {
   }
 
   revalidatePath(`/torneos/1`)
+}
+
+export  async function realTime() {
+  revalidatePath("/")
+  revalidateTag("Reservas")
+  console.log("revalidando")
 }

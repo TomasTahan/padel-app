@@ -8,6 +8,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useEffect } from "react";
 import { format, parseISO } from "date-fns";
 import { es } from "date-fns/locale";
+import { realTime } from "@/actions/actions";
 
 export default function Calendar({ reservas }: any) {
   const searchParams = useSearchParams();
@@ -23,7 +24,7 @@ export default function Calendar({ reservas }: any) {
         "postgres_changes",
         { event: "*", schema: "public", table: "Canchas" },
         (payload) => {
-          router.refresh();
+          realTime();
         }
       )
       .subscribe();

@@ -4,9 +4,10 @@ const bloquesDisponibles = [
   { inicio: "08:00", fin: "09:30" },
   { inicio: "09:30", fin: "11:00" },
   { inicio: "11:00", fin: "12:30" },
-  { inicio: "18:30", fin: "20:00" },
-  { inicio: "20:00", fin: "21:30" },
-  { inicio: "21:30", fin: "23:00" },
+  { inicio: "17:30", fin: "19:00" },
+  { inicio: "19:00", fin: "20:30" },
+  { inicio: "20:30", fin: "22:00" },
+  { inicio: "22:00", fin: "23:30" },
 ];
 
 export default function reservas({ fecha, canchas, reservas: a }: any) {
