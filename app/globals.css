@@ -94,3 +94,27 @@
 .color-borde {
   background-color: rgb(250, 250, 250)
 }
+
+.finalizado-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #666;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.torneo-card {
+  margin-bottom: 20px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}

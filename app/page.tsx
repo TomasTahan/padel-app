@@ -77,6 +77,7 @@ export default async function Home() {
   return (
     <>
       <Calendar reservas={reservas} />
+      {}
     </>
   );
 }

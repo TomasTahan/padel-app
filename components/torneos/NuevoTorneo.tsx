@@ -10,30 +10,43 @@ import {
   DialogFooter,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import SelectorCompentecia from "./SelectorCompentecia";
 
-export default function NuevoTorneo() {
+export default function NuevoTorneo({
+  tipo,
+  num,
+  cat,
+}: {
+  tipo: string;
+  num: number;
+  cat: string;
+}) {
   return (
     <div>
       <Dialog>
         <DialogTrigger asChild>
           <Button>Nuevo Torneo</Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
-            <DialogTitle>Crear Americano</DialogTitle>
+            <DialogTitle>Crear Competencia</DialogTitle>
           </DialogHeader>
           <DialogDescription className="p-4 rounded-md flex flex-col gap-3">
-            <div></div>
+            <SelectorCompentecia />
           </DialogDescription>
           <DialogFooter>
             <DialogClose asChild>
               <Button variant="secondary">Cancelar</Button>
             </DialogClose>
-            <DialogClose asChild>
-              <form action={crearAmericano}>
-                <Button type="submit">Crear</Button>
-              </form>
-            </DialogClose>
+
+            <form action={crearAmericano}>
+              <input type="hidden" name="tipo" value={tipo} />
+              <input type="hidden" name="num" value={num} />
+              <input type="hidden" name="cat" value={cat} />
+              <Button type="submit" disabled={!tipo && !num && !cat}>
+                Crear
+              </Button>
+            </form>
           </DialogFooter>
         </DialogContent>
       </Dialog>

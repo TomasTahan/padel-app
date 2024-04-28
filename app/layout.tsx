@@ -21,11 +21,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <div className="h-full">
-          <div className="hidden md:flex w-36 flex-col fixed inset-y-0">
+          <div className="hidden md:flex w-24 flex-col fixed inset-y-0">
             <Sidebar />
           </div>
           {/* <Navbar /> */}
-          <main className=" md:pl-36 pr- pt-4 h-full">
+          <main className=" md:pl-24 pt-4 h-full">
             <ThemeProvider
               attribute="class"
               defaultTheme="light"
