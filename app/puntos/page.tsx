@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import { Button } from "@/components/ui/button";
+import { ActionButton } from "@/components/ActionButton";
 import { Input } from "@/components/ui/input";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
@@ -52,7 +52,7 @@ export default async function PuntosPage({
           <p className="w-max">Pareja 2</p>
         </div>
         <div className="flex gap-2 mt-8">
-          <Button type="submit">Calcular</Button>
+          <ActionButton>Calcular</ActionButton>
           <Input
             placeholder="Resultado"
             readOnly

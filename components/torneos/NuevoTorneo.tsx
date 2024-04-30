@@ -11,6 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import SelectorCompentecia from "./SelectorCompentecia";
+import { ActionButton } from "../ActionButton";
 
 export default function NuevoTorneo({
   tipo,
@@ -43,9 +44,7 @@ export default function NuevoTorneo({
               <input type="hidden" name="tipo" value={tipo} />
               <input type="hidden" name="num" value={num} />
               <input type="hidden" name="cat" value={cat} />
-              <Button type="submit" disabled={!tipo && !num && !cat}>
-                Crear
-              </Button>
+              <ActionButton>Crear</ActionButton>
             </form>
           </DialogFooter>
         </DialogContent>

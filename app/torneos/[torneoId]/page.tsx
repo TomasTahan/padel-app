@@ -3,6 +3,7 @@ import {
   generarGrupos,
   inscribirAmericano,
 } from "@/actions/actions";
+import { ActionButton } from "@/components/ActionButton";
 import FaseGrupos from "@/components/torneos/FaseGrupos";
 import FasePlayoff from "@/components/torneos/FasePlayoff";
 import { Button } from "@/components/ui/button";
@@ -223,10 +224,11 @@ export default async function InscripcionPage({
                     />
                   </div>
                 </div>
-
-                <Button type="submit" disabled={data.parejas == dat2?.length}>
-                  Inscribir
-                </Button>
+                {data.parejas == dat2?.length ? (
+                  <Button disabled>Inscribir</Button>
+                ) : (
+                  <ActionButton>Inscribir</ActionButton>
+                )}
               </div>
             </form>
             <form action={generarGrupos}>
@@ -236,9 +238,11 @@ export default async function InscripcionPage({
                 name="americanoId"
                 readOnly
               />
-              <Button type="submit" disabled={data.parejas !== dat2?.length}>
-                Generar Grupos
-              </Button>
+              {data.parejas !== dat2?.length ? (
+                <Button disabled>Generar Grupos</Button>
+              ) : (
+                <ActionButton>Generar Grupos</ActionButton>
+              )}
             </form>
           </div>
           <div className=" border rounded-lg h-[1px] w-ful mt-8" />
@@ -267,9 +271,9 @@ export default async function InscripcionPage({
                     name="americanoId"
                     readOnly
                   />
-                  <Button className="" variant="outline">
+                  <ActionButton className="" variant="outline">
                     <Trash className="w-5 h-5" />
-                  </Button>
+                  </ActionButton>
                 </form>
               </li>
             ))}

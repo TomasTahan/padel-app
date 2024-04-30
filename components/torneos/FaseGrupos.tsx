@@ -1,6 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { createClient } from "@/lib/supabase/server";
-import { Input } from "../ui/input";
 import { RefreshCcw } from "lucide-react";
 import {
   generarPartidos,
@@ -8,8 +7,8 @@ import {
   generarPuntos,
   refresh,
 } from "@/actions/actions";
-import { Button } from "../ui/button";
 import ResultadoPartido from "./ResultadoPartido";
+import { ActionButton } from "../ActionButton";
 
 type Pareja = {
   parejaId: number;
@@ -41,10 +40,10 @@ export default async function FaseGrupos({
   const { data: partidos } = await supabase
     .from("AmericanoPartidos")
     .select()
-    .eq("americanoId", data.americanoId)
-    .order("partidosId", { ascending: true });
+    .eq("americanoId", data.americanoId);
+  // .order("partidosId", { ascending: false });
 
-  // console.log(partidos?.length);
+  console.log(partidos);
 
   //   const partidos = [
   //     {
@@ -304,7 +303,7 @@ export default async function FaseGrupos({
               value={data.americanoId}
               readOnly
             />
-            <Button size="sm">Generar Puntos</Button>
+            <ActionButton size="sm">Generar Puntos</ActionButton>
           </form>
           <form
             action={generarPayoffs}
@@ -316,9 +315,9 @@ export default async function FaseGrupos({
               value={data.americanoId}
               readOnly
             />
-            <Button size="sm" variant="outline">
+            <ActionButton size="sm" variant="outline">
               Playoffs
-            </Button>
+            </ActionButton>
           </form>
         </div>
 
@@ -457,7 +456,7 @@ export default async function FaseGrupos({
                   value={data.americanoId}
                   readOnly
                 />
-                <Button>Programar Partidos</Button>
+                <ActionButton>Programar Partidos</ActionButton>
               </form>
             </div>
           )}
