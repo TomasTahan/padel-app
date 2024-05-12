@@ -60,6 +60,7 @@ export default function Reserva({ reserva, fecha }: any) {
             inicio: reserva.inicio,
             fin: reserva.fin,
             cliente: clienteReserva,
+            clubId: 15,
           }),
         }
       );
@@ -129,6 +130,7 @@ export default function Reserva({ reserva, fecha }: any) {
             inicio: reserva.inicio,
             fin: reserva.fin,
             cliente: clienteReserva,
+            clubId: 15,
           }),
         }
       );

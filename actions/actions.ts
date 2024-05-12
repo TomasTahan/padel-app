@@ -13,7 +13,7 @@ export  async function crearAmericano(formData: FormData) {
   const { data, error } = await supabase
   .from('Americanos')
   .insert([
-    { categoria: cat, parejas: num},
+    { categoria: cat, parejas: num, clubId: 15},
   ])
   .select().single()
   

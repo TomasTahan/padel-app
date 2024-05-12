@@ -56,6 +56,7 @@ export default function NuevaReserva({ fecha }: any) {
           inicio: horaInicio,
           fin: horaFin,
           cliente: cliente,
+          clubId: 15,
         }),
       }
     );
@@ -81,7 +82,7 @@ export default function NuevaReserva({ fecha }: any) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" className="mr-4">
+        <Button variant="outline" className="mr-2">
           <Plus size={20} />
         </Button>
       </DialogTrigger>

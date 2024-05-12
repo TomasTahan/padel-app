@@ -10,7 +10,10 @@ export default async function TorneosPage({
 }) {
   const supabase = createClient();
 
-  const { data: torneos } = await supabase.from("Americanos").select("*");
+  const { data: torneos } = await supabase
+    .from("Americanos")
+    .select("*")
+    .eq("clubId", 15);
 
   console.log(torneos);
 

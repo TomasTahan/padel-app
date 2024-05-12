@@ -54,7 +54,7 @@ export default async function Home() {
   //  ].filter((reserva) => reserva.fecha === today);
 
   const res = await fetch(
-    "https://ttxvolraillgucvjjsen.supabase.co/rest/v1/Canchas?select=*",
+    "https://ttxvolraillgucvjjsen.supabase.co/rest/v1/Canchas?clubId=eq.15&select=*",
     {
       method: "GET",
       headers: {
@@ -73,6 +73,8 @@ export default async function Home() {
   }
 
   const reservas = await res.json();
+
+  console.log(reservas);
 
   return (
     <>
