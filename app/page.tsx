@@ -63,8 +63,7 @@ export default async function Home() {
         Authorization:
           "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR0eHZvbHJhaWxsZ3Vjdmpqc2VuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE0NjUzNTQsImV4cCI6MjAyNzA0MTM1NH0.fq2q6d5b6WGZ8jbQfAckJIjdACMg1gWsiff1sTHMUyk",
       },
-      // cache: "no-cache",
-      next: { tags: ["Reservas"] },
+      next: { tags: ["Reservas"], revalidate: 10 },
     }
   );
 
@@ -75,6 +74,7 @@ export default async function Home() {
   const reservas = await res.json();
 
   console.log(reservas);
+  console.log("1");
 
   return (
     <>
