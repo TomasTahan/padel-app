@@ -63,7 +63,7 @@ export default async function Home() {
         Authorization:
           "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR0eHZvbHJhaWxsZ3Vjdmpqc2VuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE0NjUzNTQsImV4cCI6MjAyNzA0MTM1NH0.fq2q6d5b6WGZ8jbQfAckJIjdACMg1gWsiff1sTHMUyk",
       },
-      next: { tags: ["Reservas"], revalidate: 10 },
+      next: { tags: ["Reservas"], revalidate: 1 },
     }
   );
 
@@ -73,13 +73,12 @@ export default async function Home() {
 
   const reservas = await res.json();
 
-  console.log(reservas);
+  console.log(reservas[0]);
   console.log("1");
 
   return (
     <>
       <Calendar reservas={reservas} />
-      {}
     </>
   );
 }

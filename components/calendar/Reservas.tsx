@@ -1,13 +1,15 @@
 import Reserva from "./Reserva";
 
 const bloquesDisponibles = [
-  { inicio: "08:00", fin: "09:30" },
-  { inicio: "09:30", fin: "11:00" },
-  { inicio: "11:00", fin: "12:30" },
-  { inicio: "17:30", fin: "19:00" },
-  { inicio: "19:00", fin: "20:30" },
-  { inicio: "20:30", fin: "22:00" },
-  { inicio: "22:00", fin: "23:30" },
+  { inicio: "09:00", fin: "10:30" },
+  { inicio: "10:30", fin: "12:00" },
+  { inicio: "12:00", fin: "13:30" },
+  // { inicio: "13:30", fin: "15:00" },
+  // { inicio: "15:00", fin: "16:30" },
+  { inicio: "16:30", fin: "18:00" },
+  { inicio: "18:00", fin: "19:30" },
+  { inicio: "19:30", fin: "21:00" },
+  { inicio: "21:00", fin: "22:30" },
 ];
 
 export default function reservas({ fecha, canchas, reservas: a }: any) {
