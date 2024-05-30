@@ -20,6 +20,8 @@ export default async function SuccessPage({
     .eq("merchId", decodedToken2?.merchant_order_id)
     .single();
 
+  console.log("merch", merch);
+
   const secretKey = merch.sigantureToken;
   let decodedToken;
   try {

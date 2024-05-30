@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 export async function POST(request: NextRequest) {
   try {
     const { payment: jwt } = await request.json();
+    console.log("JWT:", jwt);
 
     if (!jwt) {
       return NextResponse.json(
