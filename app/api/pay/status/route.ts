@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 export async function POST(request: NextRequest) {
   try {
     const { payment: jwt } = await request.json();
-    // console.log("JWT:", jwt);
+    console.log("JWT:", jwt);
 
     if (!jwt) {
       return NextResponse.json(
@@ -27,6 +27,8 @@ export async function POST(request: NextRequest) {
     }
 
     console.log("Payload decodificado:", decodedPayload);
+    console.log("Payload status:", decodedPayload.payment_status);
+    console.log("Payload merchant_order_id:", decodedPayload.merchant_order_id);
 
     const supabase = createClient();
 
