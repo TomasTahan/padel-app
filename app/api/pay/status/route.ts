@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 export async function POST(request: NextRequest) {
   try {
     const { payment: jwt } = await request.json();
-    console.log("JWT:", jwt);
+    // console.log("JWT:", jwt);
 
     if (!jwt) {
       return NextResponse.json(
@@ -25,6 +25,8 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
+
+    console.log("Payload decodificado:", decodedPayload);
 
     const supabase = createClient();
 
@@ -49,15 +51,15 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      try {
-        const decodedToken = verify(jwt, merch.sigantureToken) as JwtPayload;
-        console.log("JWT decodificado:", decodedToken);
-      } catch (error) {
-        return NextResponse.json(
-          { error: "JWT inválido. Signature incorrecto." },
-          { status: 400 }
-        );
-      }
+      // try {
+      //   const decodedToken = verify(jwt, merch.sigantureToken) as JwtPayload;
+      //   console.log("JWT decodificado:", decodedToken);
+      // } catch (error) {
+      //   return NextResponse.json(
+      //     { error: "JWT inválido. Signature incorrecto." },
+      //     { status: 400 }
+      //   );
+      // }
 
       const { data: updatedData, error: updateError } = await supabase
         .from("Pagos")
