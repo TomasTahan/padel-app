@@ -39,6 +39,9 @@ export async function POST(request: NextRequest) {
         .eq("merchId", decodedPayload.merchant_order_id)
         .single();
 
+      console.log("merch", merch);
+      console.log("merchError", merchError);
+
       if (merchError) {
         console.error("Error al obtener el registro de pago:", merchError);
         return NextResponse.json(
@@ -69,6 +72,9 @@ export async function POST(request: NextRequest) {
           status: "Success",
         })
         .eq("merchId", decodedPayload.merchant_order_id);
+
+      console.log("updatedData", updatedData);
+      console.log("updateError", updateError);
 
       if (updateError) {
         console.error("Error al actualizar el pago:", updateError);
