@@ -73,9 +73,6 @@ export default async function Home() {
 
   const reservas = await res.json();
 
-  console.log(reservas[0]);
-  console.log("1");
-
   return (
     <>
       <Calendar reservas={reservas} />
