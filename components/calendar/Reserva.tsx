@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
 import {
   Popover,
   PopoverTrigger,
@@ -10,9 +10,9 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { Input } from "../ui/input";
-import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import { Input } from "../ui/input";
 
 const estadosReserva = [
   { estado: "Disponible", color: "#d6f4d4" },
@@ -21,10 +21,17 @@ const estadosReserva = [
   { estado: "Clases", color: "#e5e9f0" },
 ];
 
-export default function Reserva({ reserva, fecha }: any) {
+export default function Reserva({
+  reserva,
+  onAddReserva,
+  onDeleteReserva,
+  onEditReserva,
+  fecha,
+}: any) {
   const [estadoReserva, setEstadoReserva] = useState(reserva.estado);
   const [clienteReserva, setClienteReserva] = useState(reserva.cliente);
   const [isLoading, setIsLoading] = useState(false);
+  const [popoverOpen, setPopoverOpen] = useState(false);
 
   useEffect(() => {
     setEstadoReserva(reserva.estado);
@@ -38,122 +45,47 @@ export default function Reserva({ reserva, fecha }: any) {
     setClienteReserva(e.target.value);
   };
 
-  const handleReservar = async (reserva: any) => {
+  const handleReservar = async () => {
     setIsLoading(true);
-    try {
-      const res = await fetch(
-        "https://ttxvolraillgucvjjsen.supabase.co/rest/v1/Canchas",
-        {
-          method: "POST",
-          headers: {
-            apikey:
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR0eHZvbHJhaWxsZ3Vjdmpqc2VuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE0NjUzNTQsImV4cCI6MjAyNzA0MTM1NH0.fq2q6d5b6WGZ8jbQfAckJIjdACMg1gWsiff1sTHMUyk",
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR0eHZvbHJhaWxsZ3Vjdmpqc2VuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE0NjUzNTQsImV4cCI6MjAyNzA0MTM1NH0.fq2q6d5b6WGZ8jbQfAckJIjdACMg1gWsiff1sTHMUyk",
-            "Content-Type": "application/json",
-            Prefer: "return=minimal",
-          },
-          body: JSON.stringify({
-            fecha: fecha,
-            cancha: reserva.cancha,
-            estado: estadoReserva,
-            inicio: reserva.inicio,
-            fin: reserva.fin,
-            cliente: clienteReserva,
-            clubId: 15,
-          }),
-        }
-      );
+    const nuevaReserva = {
+      ...reserva,
+      canchaId: "temporary-id",
+      estado: estadoReserva,
+      cliente: clienteReserva,
+      clubId: 15,
+      fecha: fecha,
+    };
 
-      if (!res.ok) {
-        throw new Error("Failed to fetch data");
-      }
-    } catch (error) {
-      console.error("Failed to make reservation:", error);
-    } finally {
-      setIsLoading(false); // Finalizar carga
-    }
+    onAddReserva(nuevaReserva);
+    setIsLoading(false);
+    setPopoverOpen(false);
   };
 
-  const handleEliminar = async (reserva: any) => {
-    setIsLoading(true);
-    try {
-      const res = await fetch(
-        `https://ttxvolraillgucvjjsen.supabase.co/rest/v1/Canchas?canchaId=eq.${reserva.canchaId}`,
-        {
-          method: "DELETE",
-          headers: {
-            apikey:
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR0eHZvbHJhaWxsZ3Vjdmpqc2VuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE0NjUzNTQsImV4cCI6MjAyNzA0MTM1NH0.fq2q6d5b6WGZ8jbQfAckJIjdACMg1gWsiff1sTHMUyk",
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR0eHZvbHJhaWxsZ3Vjdmpqc2VuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE0NjUzNTQsImV4cCI6MjAyNzA0MTM1NH0.fq2q6d5b6WGZ8jbQfAckJIjdACMg1gWsiff1sTHMUyk",
-            "Content-Type": "application/json",
-            Prefer: "return=minimal",
-          },
-        }
-      );
-
-      if (res.ok) {
-        // La reserva fue eliminada exitosamente
-        console.log("Reserva eliminada exitosamente");
-        // Aquí podrías, por ejemplo, cerrar el popover o actualizar el estado para reflejar el cambio
-      } else {
-        // Hubo un error al eliminar la reserva
-        console.error("Error al eliminar la reserva");
-      }
-    } catch (error) {
-      console.error("Failed to make reservation:", error);
-    } finally {
-      setIsLoading(false); // Finalizar carga
-    }
+  const handleEliminar = async () => {
+    onDeleteReserva(reserva.canchaId);
+    setPopoverOpen(false);
   };
 
-  const handleEditar = async (reserva: any) => {
+  const handleEditar = async () => {
     setIsLoading(true);
-    try {
-      const res = await fetch(
-        `https://ttxvolraillgucvjjsen.supabase.co/rest/v1/Canchas?canchaId=eq.${reserva.canchaId}`,
-        {
-          method: "PATCH",
-          headers: {
-            apikey:
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR0eHZvbHJhaWxsZ3Vjdmpqc2VuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE0NjUzNTQsImV4cCI6MjAyNzA0MTM1NH0.fq2q6d5b6WGZ8jbQfAckJIjdACMg1gWsiff1sTHMUyk",
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR0eHZvbHJhaWxsZ3Vjdmpqc2VuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE0NjUzNTQsImV4cCI6MjAyNzA0MTM1NH0.fq2q6d5b6WGZ8jbQfAckJIjdACMg1gWsiff1sTHMUyk",
-            "Content-Type": "application/json",
-            Prefer: "return=minimal",
-          },
-          body: JSON.stringify({
-            fecha: fecha,
-            cancha: reserva.cancha,
-            estado: estadoReserva,
-            inicio: reserva.inicio,
-            fin: reserva.fin,
-            cliente: clienteReserva,
-            clubId: 15,
-          }),
-        }
-      );
+    const reservaActualizada = {
+      ...reserva,
+      estado: estadoReserva,
+      cliente: clienteReserva,
+    };
 
-      if (res.ok) {
-        // La reserva fue eliminada exitosamente
-        console.log("Reserva eliminada exitosamente");
-        // Aquí podrías, por ejemplo, cerrar el popover o actualizar el estado para reflejar el cambio
-      } else {
-        // Hubo un error al eliminar la reserva
-        console.error("Error al eliminar la reserva");
-      }
-    } catch (error) {
-      console.error("Failed to make reservation:", error);
-    } finally {
-      setIsLoading(false); // Finalizar carga
-    }
+    onEditReserva(reservaActualizada);
+    setIsLoading(false);
+    setPopoverOpen(false);
   };
 
   return (
-    <Popover>
+    <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
       <PopoverTrigger asChild>
-        <div className="cursor-pointer w-full h-full">
+        <div
+          className="cursor-pointer w-full h-full"
+          onClick={() => setPopoverOpen(true)}
+        >
           <div className="flex flex-col w-full h-full">
             <div className="flex gap-1">
               <p className="font-bold">{`${reserva.cancha}`}</p>
@@ -219,7 +151,7 @@ export default function Reserva({ reserva, fecha }: any) {
             <>
               <Button
                 variant="outline"
-                onClick={() => handleEditar(reserva)}
+                onClick={handleEditar}
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -230,7 +162,7 @@ export default function Reserva({ reserva, fecha }: any) {
               </Button>
               <Button
                 variant="outline"
-                onClick={() => handleEliminar(reserva)}
+                onClick={handleEliminar}
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -243,7 +175,7 @@ export default function Reserva({ reserva, fecha }: any) {
           ) : (
             <Button
               variant="outline"
-              onClick={() => handleReservar(reserva)}
+              onClick={handleReservar}
               disabled={isLoading}
             >
               {isLoading ? (

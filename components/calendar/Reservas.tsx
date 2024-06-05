@@ -12,9 +12,14 @@ const bloquesDisponibles = [
   { inicio: "21:00", fin: "22:30" },
 ];
 
-export default function reservas({ fecha, canchas, reservas: a }: any) {
-  const reservas = a.filter((reserva: any) => reserva.fecha === fecha);
-
+export default function Reservas({
+  canchas,
+  reservas,
+  onAddReserva,
+  onDeleteReserva,
+  onEditReserva,
+  fecha,
+}: any) {
   const reservasDisponibles = canchas.flatMap((cancha: any) =>
     bloquesDisponibles.map((bloque) => ({
       cancha,
@@ -71,9 +76,9 @@ export default function reservas({ fecha, canchas, reservas: a }: any) {
   const getColorClass = (estado: any) => {
     switch (estado) {
       case "Reservada":
-        return "color-rojo border-[#e2bfc9]";
+        return "bg-[#f8c5c5] border-[#e2bfc9]";
       case "Disponible":
-        return "color-verde border-[#9eda90]";
+        return "bg-[#d6f4d4] border-[#9eda90]";
       case "Tour":
         return "bg-[#bfecfe] border-[#7adbfd]";
       case "Clases":
@@ -82,6 +87,7 @@ export default function reservas({ fecha, canchas, reservas: a }: any) {
         return "bg-gray-300";
     }
   };
+
   return (
     <div>
       {reservasCombinadas.map((reserva, index) => (
@@ -100,7 +106,13 @@ export default function reservas({ fecha, canchas, reservas: a }: any) {
             marginTop: "3px",
           }}
         >
-          <Reserva reserva={reserva} fecha={fecha} />
+          <Reserva
+            reserva={reserva}
+            onAddReserva={onAddReserva}
+            onDeleteReserva={onDeleteReserva}
+            onEditReserva={onEditReserva}
+            fecha={fecha}
+          />
         </div>
       ))}
     </div>

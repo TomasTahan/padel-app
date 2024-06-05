@@ -1,6 +1,12 @@
 import Reservas from "./Reservas";
 
-export default function Grilla({ fecha, reservas }: any) {
+export default function Grilla({
+  reservas,
+  onAddReserva,
+  onDeleteReserva,
+  onEditReserva,
+  fecha,
+}: any) {
   const horas = Array.from({ length: 18 }, (_, i) => 6 + i + ":00");
   const canchas = Array.from({ length: 6 }, (_, i) => i + 1);
   return (
@@ -36,7 +42,14 @@ export default function Grilla({ fecha, reservas }: any) {
           </tbody>
         </table>
         <div>
-          <Reservas fecha={fecha} canchas={canchas} reservas={reservas} />
+          <Reservas
+            canchas={canchas}
+            reservas={reservas}
+            onAddReserva={onAddReserva}
+            onDeleteReserva={onDeleteReserva}
+            onEditReserva={onEditReserva}
+            fecha={fecha}
+          />
         </div>
       </div>
     </div>
