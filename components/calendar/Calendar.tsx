@@ -4,11 +4,18 @@ import { useState, useEffect } from "react";
 import moment from "moment";
 import "moment/locale/es";
 import Grilla from "./Grilla";
-import { ChevronLeft, ChevronRight, Loader2, RotateCcw } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Loader2,
+  Plus,
+  RotateCcw,
+} from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useToast } from "../ui/use-toast";
 import { refresh } from "@/actions/actions";
 import { Button } from "../ui/button";
+import NuevaReserva from "./NuevaReserva";
 
 interface Reserva {
   canchaId: string;
@@ -271,6 +278,10 @@ export default function Test({ data }: any) {
               >
                 <RotateCcw />
               </Button>
+              <NuevaReserva
+                fecha={fechaSeleccionada.format("YYYY-MM-DD")}
+                handleAddReserva={handleAddReserva}
+              />
               <div className="flex gap-2">
                 <Button
                   variant="outline"

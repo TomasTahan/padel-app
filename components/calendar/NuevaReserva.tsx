@@ -1,4 +1,3 @@
-import { Plus } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import {
@@ -18,66 +17,69 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "../ui/input";
+import { Plus } from "lucide-react";
 
-export default function NuevaReserva({ fecha }: any) {
-  // Estados para manejar las selecciones del usuario
+const estadosReserva = [
+  { estado: "Disponible", color: "#d6f4d4" },
+  { estado: "Reservada", color: "#f8c5c5" },
+  { estado: "Tour", color: "#bfecfe" },
+  { estado: "Clases", color: "#e5e9f0" },
+];
+
+const horas = Array.from({ length: 34 }, (_, i) => {
+  const horas = Math.floor(i / 2) + 7; // Comienza a las 7 AM
+  const minutos = (i % 2) * 30;
+  return `${horas < 10 ? "0" : ""}${horas}:${minutos === 0 ? "00" : minutos}`;
+});
+
+const canchas = Array.from({ length: 6 }, (_, i) => i + 1);
+
+function sumarHoraYMedia(hora: any) {
+  const [horas, minutos] = hora.split(":").map(Number);
+  let nuevaHora = horas;
+  let nuevosMinutos = minutos + 30;
+  if (nuevosMinutos >= 60) {
+    nuevaHora += 1;
+    nuevosMinutos -= 60;
+  }
+  nuevaHora += 1;
+
+  return `${nuevaHora < 10 ? "0" : ""}${nuevaHora}:${
+    nuevosMinutos < 10 ? "0" : ""
+  }${nuevosMinutos}`;
+}
+
+export default function NuevaReserva({ fecha, handleAddReserva }: any) {
   const [horaInicio, setHoraInicio] = useState("");
   const [horaFin, setHoraFin] = useState("");
   const [estadoReserva, setEstadoReserva] = useState("");
   const [cliente, setCliente] = useState("");
-  const [cancha, setCancha] = useState<number | null>(null);
-
-  // Aquí deberías reemplazar estos arrays con tus datos dinámicos si es necesario
-  const horas = Array.from({ length: 34 }, (_, i) => {
-    const horas = Math.floor(i / 2) + 7; // Comienza en 7
-    const minutos = (i % 2) * 30;
-    return `${horas < 10 ? "0" : ""}${horas}:${minutos === 0 ? "00" : minutos}`;
-  });
-
-  const canchas = Array.from({ length: 6 }, (_, i) => i + 1);
+  const [cancha, setCancha] = useState(null);
 
   const handleReservarHora = async () => {
-    const res = await fetch(
-      "https://ttxvolraillgucvjjsen.supabase.co/rest/v1/Canchas",
-      {
-        method: "POST",
-        headers: {
-          apikey:
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR0eHZvbHJhaWxsZ3Vjdmpqc2VuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE0NjUzNTQsImV4cCI6MjAyNzA0MTM1NH0.fq2q6d5b6WGZ8jbQfAckJIjdACMg1gWsiff1sTHMUyk",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR0eHZvbHJhaWxsZ3Vjdmpqc2VuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE0NjUzNTQsImV4cCI6MjAyNzA0MTM1NH0.fq2q6d5b6WGZ8jbQfAckJIjdACMg1gWsiff1sTHMUyk",
-          "Content-Type": "application/json",
-          Prefer: "return=minimal",
-        },
-        body: JSON.stringify({
-          fecha: fecha,
-          cancha: cancha,
-          estado: estadoReserva,
-          inicio: horaInicio,
-          fin: horaFin,
-          cliente: cliente,
-          clubId: 15,
-        }),
-      }
-    );
+    const nuevaReserva = {
+      canchaId: "temporary-id",
+      fecha,
+      cancha,
+      estado: estadoReserva,
+      inicio: horaInicio,
+      fin: horaFin,
+      cliente,
+      clubId: 15,
+    };
 
-    if (res.ok) {
-      setHoraInicio("");
-      setHoraFin("");
-      setEstadoReserva("");
-      setCliente("");
-      setCancha(null);
-    } else {
-      console.error("Error al realizar la reserva");
-    }
+    await handleAddReserva(nuevaReserva);
+    setHoraInicio("");
+    setHoraFin("");
+    setEstadoReserva("");
+    setCliente("");
+    setCancha(null);
   };
 
-  const estadosReserva = [
-    { estado: "Disponible", color: "#d6f4d4" },
-    { estado: "Reservada", color: "#f8c5c5" },
-    { estado: "Tour", color: "#bfecfe" },
-    { estado: "Clases", color: "#e5e9f0" },
-  ];
+  const handleHoraInicioChange = (hora: any) => {
+    setHoraInicio(hora);
+    setHoraFin(sumarHoraYMedia(hora));
+  };
 
   return (
     <Dialog>
@@ -105,11 +107,11 @@ export default function NuevaReserva({ fecha }: any) {
                   </span>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className=" max-h-36 overflow-auto">
+              <DropdownMenuContent className="max-h-36 overflow-auto">
                 {horas.map((hora) => (
                   <DropdownMenuItem
                     key={hora}
-                    onSelect={() => setHoraInicio(hora)}
+                    onSelect={() => handleHoraInicioChange(hora)}
                   >
                     {hora}
                   </DropdownMenuItem>
@@ -117,8 +119,10 @@ export default function NuevaReserva({ fecha }: any) {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
+
+          {/* Selector de Hora Fin */}
           <div className="flex items-center gap-8">
-            <p className=" font-sans text-gray-600 w-28">Hora Fin</p>
+            <p className="font-sans text-gray-600 w-28">Hora Fin</p>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -130,7 +134,7 @@ export default function NuevaReserva({ fecha }: any) {
                   </span>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className=" max-h-36 overflow-auto">
+              <DropdownMenuContent className="max-h-36 overflow-auto">
                 {horas.map((hora) => (
                   <DropdownMenuItem
                     key={hora}
@@ -142,8 +146,10 @@ export default function NuevaReserva({ fecha }: any) {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
+
+          {/* Selector de Estado */}
           <div className="flex items-center gap-8 justify-between">
-            <p className=" font-sans text-gray-600 w-28">Estado</p>
+            <p className="font-sans text-gray-600 w-28">Estado</p>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="w-full justify-start">
@@ -159,7 +165,6 @@ export default function NuevaReserva({ fecha }: any) {
                   </span>
                 </Button>
               </DropdownMenuTrigger>
-
               <DropdownMenuContent className="w-[270px]">
                 {estadosReserva.map(({ estado, color }) => (
                   <DropdownMenuItem
@@ -177,6 +182,8 @@ export default function NuevaReserva({ fecha }: any) {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
+
+          {/* Campo de Cliente */}
           <div className="flex items-center gap-8">
             <p className="font-sans text-gray-600 w-28">Cliente</p>
             <Input
@@ -184,6 +191,8 @@ export default function NuevaReserva({ fecha }: any) {
               onChange={(e) => setCliente(e.target.value)}
             />
           </div>
+
+          {/* Selector de Cancha */}
           <div className="flex items-center gap-8">
             <p className="font-sans text-gray-600 w-28">Cancha</p>
             <DropdownMenu>
@@ -197,10 +206,11 @@ export default function NuevaReserva({ fecha }: any) {
                   </span>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className=" max-h-36 overflow-auto">
+              <DropdownMenuContent className="max-h-36 overflow-auto">
                 {canchas.map((cancha) => (
                   <DropdownMenuItem
                     key={cancha}
+                    //@ts-ignore
                     onSelect={() => setCancha(cancha)}
                   >
                     {cancha}
