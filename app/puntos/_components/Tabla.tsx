@@ -3,11 +3,14 @@
 import { useState } from "react";
 
 export default function Tabla({ data }: any) {
-  const [selectedCategory, setSelectedCategory] = useState("Cuarta A");
+  const [selectedCategory, setSelectedCategory] = useState("Categoria C");
 
   const filteredData = data.filter(
     (row: any) => row.categoria === selectedCategory
   );
+
+  //@ts-ignore
+  const uniqueCategories = [...new Set(data.map((row: any) => row.categoria))];
 
   return (
     <div className="flex flex-col items-center">
@@ -18,8 +21,11 @@ export default function Tabla({ data }: any) {
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
         >
-          <option value="Cuarta A">Cuarta A</option>
-          <option value="Cuarta B">Cuarta B</option>
+          {uniqueCategories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
         </select>
       </div>
       <table className="table-auto border-collapse border border-gray-400 bg-white shadow-md rounded-lg w-full mx-24">
