@@ -2,17 +2,53 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath, revalidateTag } from "next/cache";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import crypto from "crypto";
 
 export async function crearAmericano(formData: FormData) {
   const tipo = formData.get("tipo");
   const num = formData.get("num");
   const cat = formData.get("cat");
 
+  let clubId: number;
+
+  try {
+    const encryptedClubId = cookies().get("clubId")?.value;
+
+    if (!encryptedClubId) {
+      throw new Error("Club ID not found in cookies");
+    }
+
+    const secretKey = process.env.COOKIE_SECRET_KEY;
+    const iv = process.env.COOKIE_IV;
+
+    if (!secretKey || !iv) {
+      throw new Error("Secret key or IV is missing");
+    }
+
+    const secretKeyBuffer = Buffer.from(secretKey, "hex");
+    const ivBuffer = Buffer.from(iv, "hex");
+
+    const decipher = crypto.createDecipheriv(
+      "aes-256-cbc",
+      secretKeyBuffer,
+      ivBuffer
+    );
+    let decryptedClubId = decipher.update(encryptedClubId, "base64", "utf8");
+    decryptedClubId += decipher.final("utf8");
+
+    clubId = parseInt(decryptedClubId);
+  } catch (error) {
+    console.error("Error al descifrar el clubId:", error);
+    // Manejar el error de manera apropiada, por ejemplo, redirigir a una página de error o mostrar un mensaje al usuario
+    redirect("/login");
+  }
+
   const supabase = createClient();
   const { data, error } = await supabase
     .from("Americanos")
-    .insert([{ categoria: cat, parejas: num, clubId: 15 }])
+    .insert([{ categoria: cat, parejas: num, clubId: clubId }])
     .select()
     .single();
 

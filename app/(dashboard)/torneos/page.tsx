@@ -2,6 +2,9 @@ import NuevoTorneo from "@/components/torneos/NuevoTorneo";
 import { createClient } from "@/lib/supabase/server";
 import { QrCode } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
+import crypto from "crypto";
 
 export default async function TorneosPage({
   searchParams,
@@ -10,10 +13,52 @@ export default async function TorneosPage({
 }) {
   const supabase = createClient();
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return redirect("/login");
+  }
+
+  const encryptedClubId = cookies().get("clubId")?.value;
+
+  if (!encryptedClubId) {
+    return redirect("/login");
+  }
+
+  const secretKey = process.env.COOKIE_SECRET_KEY;
+  const iv = process.env.COOKIE_IV;
+
+  // Verificar si secretKey e iv están definidos
+  if (!secretKey || !iv) {
+    throw new Error("Secret key or IV is missing");
+  }
+
+  // Convertir secretKey e iv a Buffer
+  const secretKeyBuffer = Buffer.from(secretKey, "hex");
+  const ivBuffer = Buffer.from(iv, "hex");
+
+  let clubId;
+
+  try {
+    const decipher = crypto.createDecipheriv(
+      "aes-256-cbc",
+      secretKeyBuffer,
+      ivBuffer
+    );
+    let decryptedClubId = decipher.update(encryptedClubId, "base64", "utf8");
+    decryptedClubId += decipher.final("utf8");
+    clubId = parseInt(decryptedClubId);
+  } catch (error) {
+    console.error("Error al descifrar el clubId:", error);
+    return redirect("/login");
+  }
+
   const { data: torneos } = await supabase
     .from("Americanos")
     .select("*")
-    .eq("clubId", 15);
+    .eq("clubId", clubId);
 
   console.log(torneos);
 

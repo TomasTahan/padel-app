@@ -8,7 +8,7 @@ export default function Sidebar() {
         <p>Las Pircas</p>
 
         <div className="flex flex-col gap-10 mt-20 justify-center items-center">
-          <Link href="/" className="group">
+          <Link href="/reservas" className="group">
             <LayoutDashboard className="h-8 w-8 transition-all group-hover:scale-110" />
           </Link>
           <Link href="/torneos" className="group">

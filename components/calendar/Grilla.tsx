@@ -10,7 +10,7 @@ export default function Grilla({
   const horas = Array.from({ length: 18 }, (_, i) => 6 + i + ":00");
   const canchas = Array.from({ length: 6 }, (_, i) => i + 1);
   return (
-    <div className="relative flex w-full">
+    <div className="relative flex w-full pl-6">
       <div className="flex flex-col mt-[15px]">
         {horas.map((hora, index) => (
           <div
